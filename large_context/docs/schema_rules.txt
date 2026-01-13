@@ -1,0 +1,364 @@
+SCHEMA RULES DOCUMENT
+Version: 1.0
+Applies To: APIs, Databases, Events, Files, and Inter-Service Contracts
+
+==================================================
+
+SECTION 1: PURPOSE
+
+This document defines mandatory schema rules to ensure:
+
+Data consistency
+
+Backward compatibility
+
+Validation reliability
+
+Predictable system behavior
+
+All services must comply with these rules.
+
+==================================================
+
+SECTION 2: GENERAL SCHEMA PRINCIPLES
+
+All external data must conform to a defined schema.
+
+Schemas are contracts and must not change casually.
+
+Validation must occur at system boundaries.
+
+Unknown fields must be rejected unless explicitly allowed.
+
+Schema violations must fail fast.
+
+==================================================
+
+SECTION 3: NAMING CONVENTIONS
+
+Field Names:
+
+Use snake_case only
+
+Lowercase letters only
+
+No abbreviations unless universally accepted
+
+GOOD:
+user_id
+created_at
+total_amount
+
+BAD:
+userId
+UserID
+totalAmount
+amt
+
+Table Names:
+
+snake_case
+
+plural nouns
+
+Examples:
+users
+order_items
+payment_transactions
+
+==================================================
+
+SECTION 4: REQUIRED FIELDS
+
+Every schema MUST include:
+
+id (primary identifier)
+
+created_at (UTC timestamp)
+
+updated_at (UTC timestamp)
+
+Rules:
+
+id must be immutable
+
+created_at must never change
+
+updated_at must update on every mutation
+
+==================================================
+
+SECTION 5: DATA TYPES
+
+Preferred Types:
+
+int for identifiers
+
+float only for non-financial calculations
+
+decimal for monetary values
+
+string for text
+
+boolean for flags
+
+ISO 8601 strings for timestamps
+
+Timestamp Format:
+YYYY-MM-DDTHH:MM:SSZ
+
+Example:
+2026-01-13T09:30:00Z
+
+==================================================
+
+SECTION 6: NULLABILITY RULES
+
+Fields should be non-nullable by default.
+
+Nullable fields must be explicitly documented.
+
+Do not overload null to represent multiple states.
+
+Optional fields must have clear semantic meaning.
+
+BAD:
+status = null
+
+GOOD:
+status = "pending"
+
+==================================================
+
+SECTION 7: DEFAULT VALUES
+
+Rules:
+
+Defaults must be safe and predictable.
+
+Defaults must not change business meaning.
+
+Defaults must be documented.
+
+Examples:
+is_active = true
+retry_count = 0
+
+==================================================
+
+SECTION 8: API REQUEST SCHEMA RULES
+
+All request payloads must be validated.
+
+Reject unknown fields.
+
+Reject missing required fields.
+
+Validate field ranges and lengths.
+
+Do not coerce incorrect types silently.
+
+BAD:
+"age": "25"
+
+GOOD:
+"age": 25
+
+==================================================
+
+SECTION 9: API RESPONSE SCHEMA RULES
+
+Response schemas must be stable.
+
+Removing fields is a breaking change.
+
+Adding optional fields is allowed.
+
+Error responses must follow standard format.
+
+Standard Error Schema:
+error_code
+error_message
+request_id
+
+==================================================
+
+SECTION 10: DATABASE SCHEMA RULES
+
+Primary Keys:
+
+Single-column primary key named id
+
+Type: integer or UUID
+
+Foreign Keys:
+
+Use <table_name>_id format
+
+Enforce referential integrity
+
+Indexes:
+
+Index foreign keys
+
+Index frequently queried fields
+
+==================================================
+
+SECTION 11: JSON SCHEMA RULES
+
+JSON must be UTF-8 encoded.
+
+No trailing commas.
+
+No comments.
+
+Arrays must be homogeneous.
+
+BAD:
+[1, "two", 3]
+
+GOOD:
+[1, 2, 3]
+
+==================================================
+
+SECTION 12: EVENT SCHEMA RULES
+
+Event Envelope MUST contain:
+
+event_id
+
+event_type
+
+event_version
+
+occurred_at
+
+payload
+
+Rules:
+
+Events are immutable.
+
+Payload schema must be versioned.
+
+Consumers must handle older versions.
+
+==================================================
+
+SECTION 13: SCHEMA VERSIONING
+
+Rules:
+
+Version schemas explicitly.
+
+Increment version on breaking changes.
+
+Never modify historical schemas.
+
+Versioning Example:
+v1_user_created
+v2_user_created
+
+==================================================
+
+SECTION 14: BACKWARD COMPATIBILITY
+
+Allowed Changes:
+
+Adding optional fields
+
+Adding new schema versions
+
+Disallowed Changes:
+
+Renaming fields
+
+Changing field types
+
+Removing required fields
+
+==================================================
+
+SECTION 15: VALIDATION TOOLS
+
+Recommended:
+
+Pydantic
+
+Marshmallow
+
+JSON Schema
+
+Validation must:
+
+Occur before processing
+
+Produce actionable error messages
+
+==================================================
+
+SECTION 16: SECURITY CONSIDERATIONS
+
+Validate input length limits.
+
+Sanitize string fields.
+
+Reject executable content.
+
+Avoid exposing internal IDs externally.
+
+==================================================
+
+SECTION 17: DOCUMENTATION REQUIREMENTS
+
+Each schema must document:
+
+Field name
+
+Type
+
+Required or optional
+
+Description
+
+Example value
+
+Schemas without documentation are invalid.
+
+==================================================
+
+SECTION 18: COMMON ANTI-PATTERNS
+
+Overloading fields with multiple meanings
+
+Using free-form JSON blobs
+
+Implicit schema evolution
+
+Relying on client-side validation only
+
+==================================================
+
+SECTION 19: INSTRUCTION PRIORITY
+
+If conflicts arise:
+
+Security rules override all
+
+Schema correctness
+
+Backward compatibility
+
+Performance
+
+Convenience
+
+If uncertain, reject the data.
+
+==================================================
+
+END OF FILE
+
+==================================================

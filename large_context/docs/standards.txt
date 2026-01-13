@@ -1,0 +1,297 @@
+PYTHON CODING STANDARDS GUIDE
+Version: 1.0
+Audience: Backend / Platform / Automation Engineers
+
+==================================================
+
+SECTION 1: GENERAL PRINCIPLES
+
+Code must prioritize readability over cleverness.
+
+A developer unfamiliar with the codebase should understand logic within 5 minutes.
+
+Follow PEP8 unless explicitly overridden by project rules.
+
+Avoid premature optimization.
+
+One function = one responsibility.
+
+Explicit logic is preferred over implicit behavior.
+
+If behavior is non-obvious, document WHY, not WHAT.
+
+SECTION 2: FILE AND PROJECT STRUCTURE
+
+Standard project layout:
+
+project_root/
+app/
+init.py
+main.py
+config.py
+services/
+models/
+utils/
+tests/
+requirements.txt
+README.txt
+
+Rules:
+
+No business logic in main.py
+
+No circular imports
+
+Group files by domain, not by technical type
+
+Tests must mirror app structure
+
+SECTION 3: NAMING CONVENTIONS
+
+Variables:
+
+Use snake_case
+
+Names must be descriptive
+
+Avoid generic names like data, temp, value
+
+Examples:
+user_count
+retry_limit
+request_timeout_sec
+
+Constants:
+
+Use UPPER_SNAKE_CASE
+
+Examples:
+MAX_RETRIES
+DEFAULT_TIMEOUT_SEC
+
+Functions:
+
+snake_case
+
+Verb-based names
+
+Examples:
+fetch_user()
+calculate_total_price()
+validate_schema()
+
+Classes:
+
+PascalCase
+
+Nouns only
+
+Examples:
+OrderProcessor
+UserRepository
+
+SECTION 4: TYPE HINTS (MANDATORY)
+
+All production Python code must use type hints.
+
+Rules:
+
+Use built-in generics (list, dict, tuple)
+
+Avoid Any unless unavoidable
+
+Return types must always be specified
+
+Examples:
+
+def get_user(user_id: int) -> dict | None:
+pass
+
+def process_orders(orders: list[dict]) -> list[int]:
+pass
+
+SECTION 5: DOCSTRINGS
+
+Docstrings are mandatory for:
+
+Public functions
+
+Classes
+
+Complex private functions
+
+Use Google-style docstrings.
+
+Example:
+
+def calculate_discount(price: float, discount: float) -> float:
+"""
+Calculates discounted price.
+
+Args:
+    price (float): Original price
+    discount (float): Discount percentage
+
+Returns:
+    float: Final price after discount
+"""
+
+
+SECTION 6: ERROR HANDLING
+
+Rules:
+
+Never use bare except
+
+Never silently ignore exceptions
+
+Always log errors before raising
+
+BAD:
+try:
+x = int(value)
+except:
+pass
+
+GOOD:
+try:
+x = int(value)
+except ValueError as err:
+logger.error("Invalid integer input", exc_info=err)
+raise
+
+Custom exceptions should inherit from Exception.
+
+SECTION 7: LOGGING
+
+Rules:
+
+Use logging module only
+
+Do not use print in production code
+
+Log levels must be appropriate
+
+Levels:
+
+DEBUG: Development-only details
+
+INFO: Normal operations
+
+WARNING: Recoverable issues
+
+ERROR: Failures
+
+CRITICAL: System unusable
+
+Example:
+
+import logging
+logger = logging.getLogger(name)
+
+logger.info("Service started")
+logger.error("Database connection failed", exc_info=True)
+
+SECTION 8: SECURITY RULES
+
+Never hardcode secrets.
+
+Always use environment variables for credentials.
+
+Validate all user input.
+
+Avoid logging sensitive data.
+
+Rotate secrets regularly.
+
+BAD:
+API_KEY = "sk-live-xyz"
+
+GOOD:
+import os
+API_KEY = os.getenv("API_KEY")
+
+SECTION 9: PERFORMANCE GUIDELINES
+
+Avoid nested loops on large datasets.
+
+Prefer generators over lists when possible.
+
+Batch database operations.
+
+Avoid unnecessary object creation.
+
+Use caching for expensive operations.
+
+SECTION 10: TESTING STANDARDS
+
+Rules:
+
+Unit tests are mandatory.
+
+Minimum coverage: 80%.
+
+External services must be mocked.
+
+Tests must be deterministic.
+
+Example:
+
+def test_addition():
+assert add(2, 3) == 5
+
+SECTION 11: ASYNC PROGRAMMING RULES
+
+Use async only when I/O bound.
+
+Do not mix sync and async logic randomly.
+
+Avoid blocking calls inside async functions.
+
+Document async usage clearly.
+
+SECTION 12: CODE REVIEW REQUIREMENTS
+
+Pull requests must:
+
+Follow coding standards
+
+Include tests
+
+Include meaningful commit messages
+
+Avoid unrelated changes
+
+If code needs explanation in review comments, it likely needs refactoring.
+
+SECTION 13: COMMON ANTI-PATTERNS
+
+God functions
+
+Hardcoded configuration
+
+Global mutable state
+
+Copy-paste logic
+
+Silent exception handling
+
+SECTION 14: INSTRUCTION PRIORITY
+
+When conflicts occur, follow this order:
+
+Security rules
+
+Coding standards
+
+Type safety
+
+Performance
+
+Convenience
+
+If requirements are unclear, request clarification instead of guessing.
+
+END OF FILE
+
+==================================================
