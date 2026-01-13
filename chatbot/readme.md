@@ -1,19 +1,5 @@
 ### Chatbot with RAG
 
-#### Folder structure
-chatbot/
-├── main.py                 # Console interface with user input loop
-├── requirements.txt        # Updated with all dependencies
-├── core/
-│   ├── document_loader.py # Document reading utilities
-│   ├── text_processor.py  # Text chunking and processing
-│   ├── database.py        # ChromaDB operations
-│   ├── ai_client.py       # AWS Bedrock integration
-│   └── conversation.py    # Conversation management
-├── data/
-│   └── chroma_db/         # ChromaDB persistence directory
-└── docs/                  # Sample documents directory
-
 #### Demo
 - I have provided my resume and coding standards for python as reference documents for the chatbot and loaded
 - Documents are read and converted to plain text. Text is split into smaller chunks. Chunks are converted to embeddings using sentence-transformers then Embeddings are stored in ChromaDB for semantic search
