@@ -1,0 +1,5 @@
+chromadb
+sentence-transformers
+boto3
+PyPDF2
+python-docx
