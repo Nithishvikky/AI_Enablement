@@ -13,24 +13,34 @@
 | Use Case | Model | Rating | Comments |
 |--------|------|--------|---------|
 | Code Quality | Gemini Flash | excellent | - Correct, concise JS - Followed code-only rule - Good latency |
-| Code Quality | Claude Sonnet (Bedrock) | excellent | - Clean, readable code - Strict instruction following - Very low latency |
-| Code Quality | DeepSeek-R1:7B (Ollama) | good | - Correct logic - Added explanations despite constraints - High latency |
+| Code Quality | Claude Sonnet (Bedrock) | excellent | - Clean, readable code - Very low latency |
+| Code Quality | DeepSeek R1 7b | good | - Correct logic - Violated code-only rule - Very high latency |
+| Code Quality | GPT-4o (Azure) | excellent | - Clean, correct code - Followed constraints well |
+
 | SQL Generation | Gemini Flash | excellent | - Simple, valid query - Correct ordering and limit |
-| SQL Generation | Claude Sonnet (Bedrock) | excellent | - Optimal SQL - Clear column selection |
-| SQL Generation | DeepSeek-R1:7B (Ollama) | good | - Correct query - Minimal output this time |
-| Infrastructure Automation (Scripts) | Gemini Flash | excellent | - Uses `nullglob` safely - Handles empty dirs cleanly |
-| Infrastructure Automation (Scripts) | Claude Sonnet (Bedrock) | excellent | - Robust script - Explicit empty-case handling |
-| Infrastructure Automation (Scripts) | DeepSeek-R1:7B (Ollama) | basic or limited support | - Script is syntactically broken - Incorrect file counting |
+| SQL Generation | Claude Sonnet (Bedrock) | excellent | - Optimal SQL - Selected correct columns |
+| SQL Generation | DeepSeek R1 7b | good | - Correct query - Added explanations despite constraints |
+| SQL Generation | GPT-4o (Azure) | excellent | - Clean query - Strictly followed instructions |
+
+| Infrastructure Automation (Scripts) | Gemini Flash | excellent | - Simple and correct - Handles empty dirs implicitly |
+| Infrastructure Automation (Scripts) | Claude Sonnet (Bedrock) | excellent | - Robust script - Explicit empty handling |
+| Infrastructure Automation (Scripts) | DeepSeek R1 7b | basic or limited support | - Invalid flags - Script is syntactically broken |
+| Infrastructure Automation (Scripts) | GPT-4o (Azure) | excellent | - Clean script - Correct file counting |
+
 | Ease of Use | Gemini Flash | excellent | - Minimal prompting needed - Follows constraints |
 | Ease of Use | Claude Sonnet (Bedrock) | excellent | - Strong instruction adherence - Consistent behavior |
-| Ease of Use | DeepSeek-R1:7B (Ollama) | good | - Needs strict prompting - Verbose by default |
-| Speed / Latency | Gemini Flash | good | - ~4–8s latency - Acceptable consistency |
+| Ease of Use | DeepSeek R1 7b | good | - Needs strict prompting - Verbose by default |
+| Ease of Use | GPT-4o (Azure) | excellent | - Follows rules naturally - Low verbosity |
+
+| Speed / Latency | Gemini Flash | good | - ~3–6s latency - Acceptable consistency |
 | Speed / Latency | Claude Sonnet (Bedrock) | excellent | - ~2–3s latency - Very consistent |
-| Speed / Latency | DeepSeek-R1:7B (Ollama) | basic or limited support | - 7–18s latency - Slow and variable |
+| Speed / Latency | DeepSeek R1 7b | basic or limited support | - 13–25s latency - Very slow and variable |
+| Speed / Latency | GPT-4o (Azure) | excellent | - ~2–3s latency - Fast and stable |
 
 ---
 
 ## Overall Notes
-- Claude Sonnet → Best for production and strict evaluations
-- Gemini Flash → Strong balance of speed and correctness
-- DeepSeek-R1 → Usable for exploration, weak for automation
+- Claude Sonnet → Best for strict evaluation and production use  
+- GPT-4o → Best balance of speed + instruction following  
+- Gemini Flash → Strong baseline model, good consistency  
+- DeepSeek R1 → Useful for exploration, weak for automation and constraints  

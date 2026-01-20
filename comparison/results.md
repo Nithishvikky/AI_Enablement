@@ -4,7 +4,7 @@
 
 ### Task: application_development
 
-**Latency:** 4.045
+**Latency:** 4.813
 
 **Prompt:**
 Write a JavaScript function that takes an array of numbers and returns the maximum value. Handle empty arrays by returning null. Output only code. Max 300 characters.
@@ -12,8 +12,9 @@ Write a JavaScript function that takes an array of numbers and returns the maxim
 
 **Response:**
 ```javascript
-function getMax(arr) {
-  return arr.length === 0 ? null : Math.max(...arr);
+function max(arr) {
+  if (arr.length === 0) return null;
+  return Math.max(...arr);
 }
 ```
 
@@ -23,7 +24,7 @@ function getMax(arr) {
 
 ### Task: automation_scripts
 
-**Latency:** 8.613
+**Latency:** 6.227
 
 **Prompt:**
 Write a Bash script that counts the number of .jpg files in the current directory and prints the count. Handle empty directories. Output only code. Max 300 characters.
@@ -31,7 +32,7 @@ Write a Bash script that counts the number of .jpg files in the current director
 
 **Response:**
 ```bash
-shopt -s nullglob; files=(*.jpg); echo "${#files[@]}"
+find . -maxdepth 1 -type f -name "*.jpg" | wc -l
 ```
 
 ---
@@ -40,7 +41,7 @@ shopt -s nullglob; files=(*.jpg); echo "${#files[@]}"
 
 ### Task: sql_generation
 
-**Latency:** 5.045
+**Latency:** 3.414
 
 **Prompt:**
 Given a table orders(order_id, customer_id, total_amount), write SQL to find the top 5 highest orders by total_amount. Output only the query. Max 300 characters.
@@ -60,14 +61,14 @@ LIMIT 5;
 
 ### Task: application_development
 
-**Latency:** 2.896
+**Latency:** 2.286
 
 **Prompt:**
 Write a JavaScript function that takes an array of numbers and returns the maximum value. Handle empty arrays by returning null. Output only code. Max 300 characters.
 
 
 **Response:**
-Here's a JavaScript function that finds the maximum value in an array of numbers, handling empty arrays by returning null:
+Here's a JavaScript function that finds the maximum value in an array of numbers, handling empty arrays by returning null, in 300 characters or less:
 
 ```javascript
 function findMax(arr) {
@@ -76,15 +77,13 @@ function findMax(arr) {
 }
 ```
 
-This function is concise and stays well under the 300 character limit.
-
 ---
 
 ## Model: Claude Sonnet (Bedrock)
 
 ### Task: automation_scripts
 
-**Latency:** 3.061
+**Latency:** 3.001
 
 **Prompt:**
 Write a Bash script that counts the number of .jpg files in the current directory and prints the count. Handle empty directories. Output only code. Max 300 characters.
@@ -97,7 +96,11 @@ Here's a Bash script that counts .jpg files in the current directory and handles
 #!/bin/bash
 count=$(ls -1 *.jpg 2>/dev/null | wc -l)
 if [ $count -eq 0 ]; then
-    echo "No .jpg files found in the current directory."
+    if [ -z "$(ls -A)" ]; then
+        echo "Directory is empty"
+    else
+        echo "No .jpg files found"
+    fi
 else
     echo "Number of .jpg files: $count"
 fi
@@ -109,7 +112,7 @@ fi
 
 ### Task: sql_generation
 
-**Latency:** 2.845
+**Latency:** 2.537
 
 **Prompt:**
 Given a table orders(order_id, customer_id, total_amount), write SQL to find the top 5 highest orders by total_amount. Output only the query. Max 300 characters.
@@ -125,7 +128,7 @@ ORDER BY total_amount DESC
 LIMIT 5;
 ```
 
-This query selects the order_id, customer_id, and total_amount columns from the orders table, sorts the results in descending order based on the total_amount, and limits the output to the top 5 rows.
+This query selects the order_id, customer_id, and total_amount columns from the orders table, sorts the results in descending order based on total_amount, and limits the output to the top 5 rows.
 
 ---
 
@@ -133,31 +136,35 @@ This query selects the order_id, customer_id, and total_amount columns from the 
 
 ### Task: application_development
 
-**Latency:** 18.289
+**Latency:** 20.073
 
 **Prompt:**
 Write a JavaScript function that takes an array of numbers and returns the maximum value. Handle empty arrays by returning null. Output only code. Max 300 characters.
 
 
 **Response:**
-To solve this problem, we need to create a JavaScript function that determines the maximum value from an array of numbers. If the array is empty, the function should return `null`.
+To solve this problem, we need to write a JavaScript function called `maxArray` that takes an array of numbers and returns the maximum value. If the array is empty, the function should return `null`.
 
 ### Approach
-1. **Check for Empty Array**: The first step is to check if the input array is empty. This can be done using the length property of arrays. If the array has a length of 0, we immediately return `null`.
-2. **Find Maximum Value**: If the array is not empty, we use JavaScript's built-in `Math.max` function combined with the rest operator (`...`). The rest operator allows us to spread the elements of the array as individual arguments to the `Math.max` function, which then returns the maximum value.
+The approach involves using the `reduce` method available in JavaScript arrays. The `reduce` method iterates over each element of the array and accumulates a result based on a provided function. Here's the step-by-step plan:
+
+1. **Check for an Empty Array**: If the input array is empty (i.e., its length is 0), the function should return `null`.
+2. **Find Maximum Value Using reduce**: If the array is not empty, use the `reduce` method to iterate through each element and keep track of the maximum value encountered.
+
+The `reduce` method will be initialized with a starting value set to `-Infinity`, which ensures that any number in the array will be larger than this initial value. As we iterate through the array elements, we compare each element with the current maximum and update the maximum if necessary.
 
 ### Solution Code
+
 ```javascript
-function maxArray(arr) {
-    return arr.length === 0 ? null : Math.max(...arr);
-}
+function maxArray(arr) { return arr ? arr.reduce((max, num) => Math.max(max, num)) : null; }
 ```
 
 ### Explanation
-- **Empty Array Check**: The ternary operator is used here for conciseness. It checks if `arr.length` is 0. If true, it returns `null`.
-- **Finding Maximum Value**: When the array is not empty, `Math.max(...arr)` effectively passes each element of the array as an argument to `Math.max`, which computes and returns the maximum value.
+- **Check for Empty Array**: The expression `arr ? ...` checks if the array is non-empty. If it's empty (i.e., falsy), the code returns `null`.
+- **Using reduce**: The `reduce` method is called on the array with an initial value of `(max, num) => Math.max(max, num)`. This compares each element (`num`) with the current maximum (`max`) and updates `max` if `num` is larger.
+- **Return Maximum Value**: If the array is not empty, the result of the `reduce` method (which holds the maximum value) is returned.
 
-This approach ensures that we handle both non-empty and empty arrays efficiently with minimal code.
+This solution efficiently handles both non-empty and empty arrays while ensuring that the maximum value is correctly identified.
 
 ---
 
@@ -165,17 +172,36 @@ This approach ensures that we handle both non-empty and empty arrays efficiently
 
 ### Task: automation_scripts
 
-**Latency:** 8.205
+**Latency:** 25.317
 
 **Prompt:**
 Write a Bash script that counts the number of .jpg files in the current directory and prints the count. Handle empty directories. Output only code. Max 300 characters.
 
 
 **Response:**
+To count the number of .jpg files in the current directory and subdirectories, while ignoring hidden files, you can use a bash script as follows. This script efficiently handles all cases, including empty directories.
+
 ```bash
-count=$(find . -name "*.jpg")
-[ $count -eq 0 ]&&echo "Directory is empty'||echo $count
+echo $(find . -type f -name *.jpg -R -o + | wc -l)
 ```
+
+**Step-by-Step Explanation:**
+
+1. **Command Breakdown:**
+   - `find .`: Scans the current directory and its subdirectories for files.
+   - `-type f`: Specifies that only regular files are considered, excluding directories.
+   - `-name "*.jpg"`: Filters files with a `.jpg` extension.
+   - `-R`: Makes the search recursive, checking all subdirectories.
+   - `-o +`: Excludes hidden files (those starting with `.`), ensuring only visible files are counted.
+
+2. **Output:**
+   - The result is piped to `wc -l`, which counts the number of lines in the output. Each file found corresponds to a line, thus providing the correct count.
+
+3. **Functionality:**
+   - Handles empty directories gracefully by returning 0 if no .jpg files are present.
+   - Efficiently scans through the directory structure using recursion and filtering.
+
+This script is concise, efficient, and handles edge cases like hidden files and empty directories effectively.
 
 ---
 
@@ -183,14 +209,81 @@ count=$(find . -name "*.jpg")
 
 ### Task: sql_generation
 
-**Latency:** 7.344
+**Latency:** 13.207
 
 **Prompt:**
 Given a table orders(order_id, customer_id, total_amount), write SQL to find the top 5 highest orders by total_amount. Output only the query. Max 300 characters.
 
 
 **Response:**
-SELECT order_id, total_amount FROM orders ORDER BY total_amount DESC LIMIT 5;
+To find the top 5 highest orders based on `total_amount`, you can use SQL's `ORDER BY` clause with `DESC` for descending order and `LIMIT` to restrict the results. The query selects specific columns from the orders table.
+
+**Answer:**
+
+```sql
+SELECT order_id, customer_id, total_amount FROM orders ORDER BY total_amount DESC LIMIT 5;
+```
+
+This query sorts the orders by their `total_amount` in descending order and returns only the top 5 entries.
+
+---
+
+## Model: GPT-4o (Azure)
+
+### Task: application_development
+
+**Latency:** 2.259
+
+**Prompt:**
+Write a JavaScript function that takes an array of numbers and returns the maximum value. Handle empty arrays by returning null. Output only code. Max 300 characters.
+
+
+**Response:**
+```javascript
+function findMax(arr) {
+  if (arr.length === 0) return null;
+  return Math.max(...arr);
+}
+```
+
+---
+
+## Model: GPT-4o (Azure)
+
+### Task: automation_scripts
+
+**Latency:** 2.059
+
+**Prompt:**
+Write a Bash script that counts the number of .jpg files in the current directory and prints the count. Handle empty directories. Output only code. Max 300 characters.
+
+
+**Response:**
+```bash
+#!/bin/bash
+count=$(find . -maxdepth 1 -type f -name "*.jpg" | wc -l)
+echo $count
+```
+
+---
+
+## Model: GPT-4o (Azure)
+
+### Task: sql_generation
+
+**Latency:** 2.57
+
+**Prompt:**
+Given a table orders(order_id, customer_id, total_amount), write SQL to find the top 5 highest orders by total_amount. Output only the query. Max 300 characters.
+
+
+**Response:**
+```sql
+SELECT order_id, customer_id, total_amount 
+FROM orders 
+ORDER BY total_amount DESC 
+LIMIT 5;
+```
 
 ---
 

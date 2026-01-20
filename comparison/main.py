@@ -4,6 +4,7 @@ import requests
 import os
 from dotenv import load_dotenv
 import boto3
+from openai import AzureOpenAI
 
 load_dotenv() # Load .env file
 
@@ -12,10 +13,17 @@ OLLAMA_API_URL = os.getenv("OLLAMA_API_URL")
 GEMINI_API_BASE_URL = os.getenv("GEMINI_API_BASE_URL")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
+
+# Azure OpenAI configuration
+AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
+AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+AZURE_OPENAI_API_VERSION = os.getenv("AZURE_OPENAI_API_VERSION")
+
 MODELS_TO_EVALUATE = [
     {"name": "Gemini Flash", "type": "google", "model_id": "gemini-2.5-flash"},
     {"name": "Claude Sonnet (Bedrock)", "type": "anthropic", "model_id": "anthropic.claude-3-5-sonnet-20240620-v1:0"},
-    {"name": "DeepSeek R1 7b", "type": "ollama", "model_id": "deepseek-r1:7b"}
+    {"name": "DeepSeek R1 7b", "type": "ollama", "model_id": "deepseek-r1:7b"},
+    {"name": "GPT-4o (Azure)", "type": "azure", "model_id": "gpt-4o"}
 ]
 
 TASK_PROMPTS = {
@@ -93,6 +101,27 @@ def query_ollama_model(model_id, prompt_text):
     except KeyError:
          return "Ollama API Error: Malformed JSON response from Ollama."
 
+def query_azure_openai_model(model_id, prompt_text):
+    """Query Azure OpenAI model"""
+    try:
+        client = AzureOpenAI(
+            api_key=AZURE_OPENAI_API_KEY,
+            api_version=AZURE_OPENAI_API_VERSION,
+            azure_endpoint=AZURE_OPENAI_ENDPOINT
+        )
+        
+        response = client.chat.completions.create(
+            model=model_id,
+            messages=[
+                {"role": "user", "content": prompt_text}
+            ],
+            max_tokens=2048,
+        )
+        
+        return response.choices[0].message.content
+        
+    except Exception as e:
+        return f"Azure OpenAI API Error: {str(e)}"
 
 def save_results_to_markdown(results: list) -> str:
     """Saves the results to a Markdown file"""
@@ -133,6 +162,8 @@ if __name__ == "__main__":
                     response_text = query_gemini_model(model_id, task_prompt)
                 elif model_type == "ollama":
                     response_text = query_ollama_model(model_id, task_prompt)
+                elif model_type == "azure":
+                    response_text = query_azure_openai_model(model_id, task_prompt)
                 else:
                     raise ValueError(f"Unknown model type: {model_type}")
             except Exception as e:
