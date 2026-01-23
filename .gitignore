@@ -2,5 +2,9 @@
 .venv
 chroma_db
 .DS_Store
+credentials.json
+token.json
+hr_docs
+vector_db
 
 __pycache__

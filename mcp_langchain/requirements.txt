@@ -1,0 +1,17 @@
+boto3==1.42.32
+chromadb==1.4.1
+fastmcp==2.14.3
+langchain==1.2.6
+langchain-aws==1.2.1
+langchain-community==0.4.1
+langchain-core==1.2.7
+langchain-mcp-adapters==0.2.1
+langchain-text-splitters==1.1.0
+mcp==1.25.0
+PyPDF2==3.0.1
+sentence-transformers==5.2.0
+tavily-python
+python-dotenv
+langchain_huggingface
+langchain_chroma
+langchain_tavily
