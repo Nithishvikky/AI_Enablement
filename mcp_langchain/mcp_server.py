@@ -1,5 +1,5 @@
 from mcp.server.fastmcp import FastMCP
-from langchain_community.document_loaders import GoogleDriveLoader
+from langchain_google_community import  GoogleDriveLoader
 from dotenv import load_dotenv
 import os
 

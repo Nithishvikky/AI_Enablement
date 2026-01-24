@@ -16,6 +16,7 @@ def create_web_search_tool():
     tool.description = (
         "Use this tool when information requires current data such as "
         "market trends, salary benchmarks, regulations, compliance updates, or industry news."
+        "Use this tool when future or latest data asked by user"
     )
 
     return tool
