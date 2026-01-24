@@ -1,0 +1,10 @@
+"Give me the complete details of our insurance policies."
+
+"What is our hybrid work policy?"
+
+"What are the latest industry best practices for employee benefits in 2026?"
+
+"Can you provide a comprehensive analysis of our Presidio HR and benefits policies? 
+Please review our insurance policies and HR handbook, compare them with current industry 
+best practices and labor law requirements, and identify any gaps, risks, or areas for 
+improvement. Highlight specific compliance issues if any."

@@ -31,6 +31,8 @@ async def console():
                 }
             )
 
+            print(f"\n\n----- Agent Response ----- \n{result['messages'][-1].content}\n")
+
             # Extract and display tools used and response time
             tools_used = set()
             latency_ms = 0
@@ -53,8 +55,6 @@ async def console():
             
             if latency_ms:
                 print(f"Response time: {latency_ms}ms")
-
-            print(f"\n\n----- Agent Response ----- \n{result['messages'][-1].content}\n")
     
     except KeyboardInterrupt:
         print("\n\nInterrupted by user.")
