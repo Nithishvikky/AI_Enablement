@@ -6,5 +6,6 @@ credentials.json
 token.json
 hr_docs
 vector_db
+docs
 
 __pycache__

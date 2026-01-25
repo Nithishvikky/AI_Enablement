@@ -1,0 +1,11 @@
+langchain==1.2.7
+langgraph==1.0.7
+duckduckgo-search==8.1.1
+ddgs==9.10.0
+langchain_aws==1.2.1
+langchain-community==0.4.1
+langchain_chroma==1.1.0
+langchain_huggingface==1.2.0
+pypdf==6.6.1
+sentence-transformers==5.2.0
+python-dotenv
