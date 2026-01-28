@@ -7,5 +7,6 @@ token.json
 hr_docs
 vector_db
 docs
+.vscode
 
 __pycache__
